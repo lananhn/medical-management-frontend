@@ -8,16 +8,20 @@ class Registration {
     return axios.get(API_URL + '', { headers: authHeader() });
   }
 
-  createRegis() {
-    return axios.post(API_URL + 'add', { headers: authHeader() });
+  createRegis(data) {
+    return axios.post(API_URL + 'add', data, { headers: authHeader() });
   }
 
-  updateStatusTypeOfService(id) {
-    return axios.put(API_URL + 'updateStatus' + id, { headers: authHeader() });
+  updateReg(id, data) {
+    return axios.put(API_URL + 'update/' + id, data, { headers: authHeader() });
   }
 
   listServiceRegisByPatient(patientId) {
-    return axios.get(API_URL + 'listServiceRegis' + patientId, { headers: authHeader() });
+    return axios.get(API_URL + 'listServiceRegis/' + patientId, { headers: authHeader() });
+  }
+
+  getRegById(id) {
+    return axios.get(API_URL + id , { headers: authHeader() });
   }
 }
 

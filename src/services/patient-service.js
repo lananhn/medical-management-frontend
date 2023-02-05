@@ -8,16 +8,24 @@ class PatientService {
     return axios.get(API_URL + '', { headers: authHeader() });
   }
 
-  createPatient() {
-    return axios.post(API_URL + 'add', { headers: authHeader() });
+  createPatient(data) {
+    return axios.post(API_URL + 'add', data, { headers: authHeader() });
   }
 
   updateInsurancePatient(id) {
     return axios.put(API_URL + 'insurance' + id, { headers: authHeader() });
   }
 
-  updatePatient(id) {
-    return axios.put(API_URL + id, { headers: authHeader() });
+  updatePatient(id, data) {
+    return axios.put(API_URL + id, data, { headers: authHeader() });
+  }
+  
+  getPatientById(id) {
+    return axios.get(API_URL + id , { headers: authHeader() });
+  }
+  
+  getInForPatient(id) {
+    return axios.get(API_URL + "infor/" + id , { headers: authHeader() });
   }
 }
 

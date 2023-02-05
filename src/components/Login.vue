@@ -17,14 +17,14 @@
           <Field name="password" type="password" class="form-control" />
           <ErrorMessage name="password" class="error-feedback" />
         </div>
-
-        <div class="form-group">
+        <br />
+        <div class="form-group" style="text-align: center">
           <button class="btn btn-primary btn-block" :disabled="loading">
             <span
               v-show="loading"
               class="spinner-border spinner-border-sm"
             ></span>
-            <span>Login</span>
+            <span>Đăng nhập</span>
           </button>
         </div>
 
@@ -50,8 +50,8 @@ export default {
   },
   data() {
     const schema = yup.object().shape({
-      username: yup.string().required("Username is required!"),
-      password: yup.string().required("Password is required!"),
+      username: yup.string().required("Username cần được nhập!"),
+      password: yup.string().required("Password cần được nhập!"),
     });
     return {
       loading: false,

@@ -8,16 +8,19 @@ class Service {
     return axios.get(API_URL + '', { headers: authHeader() });
   }
 
-  createService() {
-    return axios.post(API_URL + 'add', { headers: authHeader() });
+  createService(data) {
+    return axios.post(API_URL + 'add', data, { headers: authHeader() });
   }
 
   updateStatusService(id) {
     return axios.put(API_URL + 'updateStatus' + id, { headers: authHeader() });
   }
 
-  updateServicer(id) {
-    return axios.put(API_URL + 'update' + id, { headers: authHeader() });
+  updateService(id, data) {
+    return axios.put(API_URL + 'update' + '/' + id, data, { headers: authHeader() });
+  }
+  getService(id) {
+    return axios.get(API_URL + id, { headers: authHeader() });
   }
 }
 

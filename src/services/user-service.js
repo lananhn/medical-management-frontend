@@ -8,16 +8,16 @@ class UserService {
     return axios.get(API_URL + '', { headers: authHeader() });
   }
 
-  createUser() {
-    return axios.post(API_URL + 'addUser', { headers: authHeader() });
+  createUser(data) {
+    return axios.post(API_URL + 'addUser', data, { headers: authHeader() });
   }
 
-  updateStatusUser(id) {
-    return axios.put(API_URL + 'status' + id, { headers: authHeader() });
+  updateUser(id, data) {
+    return axios.put(API_URL + 'update' + '/' + id, data, { headers: authHeader() });
   }
-
-  updateUser(id) {
-    return axios.put(API_URL + 'update' + id, { headers: authHeader() });
+  
+  getUser(id) {
+    return axios.get(API_URL + id, { headers: authHeader() });
   }
 }
 

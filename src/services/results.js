@@ -8,14 +8,17 @@ class Results {
     return axios.get(API_URL + '', { headers: authHeader() });
   }
 
-  createResults() {
-    return axios.post(API_URL + 'add', { headers: authHeader() });
+  createResults(data) {
+    return axios.post(API_URL + 'add', data, { headers: authHeader() });
   }
 
-  updateRegs(id) {
-    return axios.put(API_URL + '' + id, { headers: authHeader() });
+  updateResult(id, data) {
+    return axios.put(API_URL + id, data, { headers: authHeader() });
   }
   
+  getResultById(id) {
+    return axios.get(API_URL + id, { headers: authHeader() });
+  }
 }
 
 export default new Results();
