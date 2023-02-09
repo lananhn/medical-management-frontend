@@ -4,15 +4,24 @@
       <h4>Danh sách bản kê khám / chữa bệnh</h4>
       <br />
       <router-link to="/bills/add" class="row">
-        <button class="btn btn-success" v-on:click="addBill()">Thêm</button>
+        <button class="btn btn-success add" v-on:click="addBill()">Thêm</button>
       </router-link>
-      <div v-if="message" class="alert alert-success">{{ this.message }}</div>
-      <div class="container">
+      <br />
+      <input
+        type="text"
+        placeholder="Số điện thoại bệnh nhân"
+        class="search-input"
+        v-model="searchValue"
+      />
+      <br />
+      <br />
+      <div class="container" v-if="list.length">
         <table class="table">
           <thead>
             <tr>
               <th>Id</th>
               <th>Tên bệnh nhân</th>
+              <th>Số điện thoại</th>
               <th>Giới tính</th>
               <th>Ngày sinh</th>
               <th>Tên dịch vụ</th>
@@ -25,9 +34,10 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="bill in bills" v-bind:key="bill.billExId">
+            <tr v-for="bill in list" v-bind:key="bill.billExId">
               <td>{{ bill.billExId }}</td>
               <td>{{ bill.patientName }}</td>
+              <td>{{ bill.phone }}</td>
               <td>{{ bill.gender }}</td>
               <td>{{ bill.birthday }}</td>
               <td>{{ bill.serviceName }}</td>
@@ -45,6 +55,7 @@
           </tbody>
         </table>
       </div>
+      <div v-else>Không có kết quả cho: {{ searchValue }}</div>
     </header>
   </div>
 </template>
@@ -55,6 +66,7 @@ export default {
   name: "billsView",
   data() {
     return {
+      searchValue: "",
       bills: [],
     };
   },
@@ -73,5 +85,20 @@ export default {
       }
     );
   },
+  computed: {
+    list() {
+      if (this.searchValue.trim().length > 0) {
+        return this.bills.filter((bill) =>
+          bill.phone.includes(this.searchValue.trim())
+        );
+      }
+      return this.bills;
+    },
+  },
 };
 </script>
+<style>
+.add {
+  width: 70px;
+}
+</style>

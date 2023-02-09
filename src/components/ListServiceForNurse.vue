@@ -3,7 +3,15 @@
     <header class="jumbotron">
       <h4>Danh sách dịch vụ</h4>
       <br />
-      <div class="container">
+      <input
+        type="text"
+        placeholder="Tên dịch vụ"
+        class="search-input"
+        v-model="searchValue"
+      />
+      <br />
+      <br />
+      <div class="container" v-if="list.length">
         <table class="table">
           <thead>
             <tr>
@@ -16,7 +24,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="service in services" v-bind:key="service.id">
+            <tr v-for="service in list" v-bind:key="service.id">
               <td>{{ service.id }}</td>
               <td>{{ service.name }}</td>
               <td>{{ service.price }}</td>
@@ -27,6 +35,7 @@
           </tbody>
         </table>
       </div>
+      <div v-else>Không có kết quả cho: {{ searchValue }}</div>
     </header>
   </div>
 </template>
@@ -37,6 +46,7 @@ export default {
   name: "typeOfServiceView",
   data() {
     return {
+      searchValue: "",
       services: [],
     };
   },
@@ -54,6 +64,18 @@ export default {
           error.toString();
       }
     );
+  },
+  computed: {
+    list() {
+      if (this.searchValue.trim().length > 0) {
+        return this.services.filter((service) =>
+          service.name
+            .toLowerCase()
+            .includes(this.searchValue.trim().toLowerCase())
+        );
+      }
+      return this.services;
+    },
   },
 };
 </script>

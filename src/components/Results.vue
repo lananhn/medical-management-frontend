@@ -4,10 +4,20 @@
       <h4>Kết quả khám bệnh</h4>
       <br />
       <router-link to="/results/add" class="row">
-        <button class="btn btn-success" v-on:click="addResults()">Thêm</button>
+        <button class="btn btn-success add" v-on:click="addResults()">
+          Thêm
+        </button>
       </router-link>
-      <div v-if="message" class="alert alert-success">{{ this.message }}</div>
-      <div class="container">
+      <br />
+      <input
+        type="text"
+        placeholder="Số điện thoại bệnh nhân"
+        class="search-input"
+        v-model="searchValue"
+      />
+      <br />
+      <br />
+      <div class="container" v-if="list.length">
         <table class="table">
           <thead>
             <tr>
@@ -16,18 +26,20 @@
               <th>Điều trị</th>
               <th>Tên dịch vụ</th>
               <th>Tên bệnh nhân</th>
+              <th>Số điện thoại</th>
               <th>Tên bác sỹ</th>
               <th>Ngày cập nhật cuối</th>
               <th>Update</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="result in results" v-bind:key="result.resultsId">
+            <tr v-for="result in list" v-bind:key="result.resultsId">
               <td>{{ result.resultsId }}</td>
               <td>{{ result.result }}</td>
               <td>{{ result.description }}</td>
               <td>{{ result.serviceName }}</td>
               <td>{{ result.patientName }}</td>
+              <td>{{ result.phone }}</td>
               <td>{{ result.doctorName }}</td>
               <td>{{ result.dateCreated }}</td>
               <td>
@@ -41,6 +53,7 @@
           </tbody>
         </table>
       </div>
+      <div v-else>Không có kết quả cho: {{ searchValue }}</div>
     </header>
   </div>
 </template>
@@ -51,6 +64,7 @@ export default {
   name: "resultsView",
   data() {
     return {
+      searchValue: "",
       results: [],
     };
   },
@@ -68,6 +82,16 @@ export default {
           error.toString();
       }
     );
+  },
+  computed: {
+    list() {
+      if (this.searchValue.trim().length > 0) {
+        return this.results.filter((result) =>
+          result.phone.includes(this.searchValue.trim())
+        );
+      }
+      return this.results;
+    },
   },
 };
 </script>

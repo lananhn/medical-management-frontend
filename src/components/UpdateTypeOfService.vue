@@ -1,53 +1,103 @@
 <template>
   <div class="container">
     <header class="jumbotron">
-      <div v-if="!submitted">
-        <div v-if="currentTypeOfService">
-          <div class="mb-3">
-            <label class="form-label">Tên loại dịch vụ</label>
-            <input
-              type="text"
-              class="form-control"
-              v-model="currentTypeOfService.name"
-            />
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Trạng thái</label>
-            <input
-              type="text"
-              class="form-control"
-              v-model="currentTypeOfService.status"
-            />
-          </div>
-          <div class="mb-3">
-            <button @click="updateTypeOfService" class="btn btn-success">
-              Lưu
-            </button>
+      <Form @submit="handleAdd" :validation-schema="schema">
+        <div v-if="!submitted">
+          <div v-if="currentTypeOfService">
+            <div class="mb-3">
+              <label class="form-label">Tên loại dịch vụ</label>
+              <Field
+                name="name"
+                type="text"
+                class="form-control"
+                v-model="currentTypeOfService.name"
+              />
+              <ErrorMessage name="name" class="error-feedback" />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Trạng thái</label>
+              <Field
+                name="status"
+                type="text"
+                class="form-control"
+                v-model="currentTypeOfService.status"
+              />
+              <ErrorMessage name="status" class="error-feedback" />
+            </div>
+            <div class="mb-3">
+              <button
+                @click="updateTypeOfService"
+                class="btn btn-success"
+                :disabled="loading"
+              >
+                <span
+                  v-show="loading"
+                  class="spinner-border spinner-border-sm"
+                ></span
+                >Lưu
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-      <div v-else>
-        <div class="alert alert-success" role="alert">Đã Sửa</div>
-        <router-link to="/typeOfServices" class="mb-3">
-          <button class="btn btn-success">Quay lại</button>
-        </router-link>
-      </div>
+        <div v-else>
+          <div class="alert alert-success" role="alert">Đã Sửa</div>
+          <router-link to="/typeOfServices" class="mb-3">
+            <button class="btn btn-success">Quay lại</button>
+          </router-link>
+        </div>
+      </Form>
     </header>
   </div>
 </template>
 
 <script>
 import TypeOfService from "../services/type-of-service";
+import { Form, Field, ErrorMessage } from "vee-validate";
+import * as yup from "yup";
 
 export default {
+  components: {
+    Form,
+    Field,
+    ErrorMessage,
+  },
   data() {
+    const schema = yup.object().shape({
+      name: yup.string().required("Tên cần được nhập"),
+      status: yup.string().required("Trạng thái được nhập"),
+    });
     return {
       currentTypeOfService: null,
       message: "",
+      loading: false,
       submitted: false,
+      schema,
     };
   },
   methods: {
+    handleAdd(typeOfServices) {
+      this.message = "";
+      this.submitted = false;
+      this.loading = true;
+
+      this.$store.dispatch("typeOfServices", typeOfServices).then(
+        (data) => {
+          this.message = data.message;
+          this.successful = true;
+          this.loading = false;
+        },
+        (error) => {
+          this.message =
+            (error.response &&
+              error.response.data &&
+              error.response.data.message) ||
+            error.message ||
+            error.toString();
+          this.successful = false;
+          this.loading = false;
+        }
+      );
+    },
     getTypeOfService(id) {
       TypeOfService.getTypeOfService(id)
         .then((response) => {

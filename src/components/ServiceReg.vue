@@ -4,16 +4,25 @@
       <h4>Đăng ký khám/chữa bệnh</h4>
       <br />
       <router-link to="/serviceReg/add" class="row">
-        <button class="btn btn-success" v-on:click="addReg()">Thêm</button>
+        <button class="btn btn-success add" v-on:click="addReg()">Thêm</button>
       </router-link>
-      <div v-if="message" class="alert alert-success">{{ this.message }}</div>
-      <div class="container">
+      <br />
+      <input
+        type="text"
+        placeholder="Số điện thoại bệnh nhân"
+        class="search-input"
+        v-model="searchValue"
+      />
+      <br />
+      <br />
+      <div class="container" v-if="list.length">
         <table class="table">
           <thead>
             <tr>
               <th>Id</th>
               <th>Số lượng</th>
               <th>Tên bệnh nhân</th>
+              <th>Số điện thoại</th>
               <th>Tên dịch vụ</th>
               <th>Tên bác sỹ</th>
               <th>Ngày cập nhật cuối</th>
@@ -21,10 +30,11 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="reg in regs" v-bind:key="reg.regId">
+            <tr v-for="reg in list" v-bind:key="reg.regId">
               <td>{{ reg.regId }}</td>
               <td>{{ reg.quantity }}</td>
               <td>{{ reg.patientName }}</td>
+              <td>{{ reg.phone }}</td>
               <td>{{ reg.serviceName }}</td>
               <td>{{ reg.doctorName }}</td>
               <td>{{ reg.dateCreated }}</td>
@@ -37,6 +47,7 @@
           </tbody>
         </table>
       </div>
+      <div v-else>Không có kết quả cho: {{ searchValue }}</div>
     </header>
   </div>
 </template>
@@ -47,6 +58,7 @@ export default {
   name: "serviceRegView",
   data() {
     return {
+      searchValue: "",
       regs: [],
     };
   },
@@ -64,6 +76,16 @@ export default {
           error.toString();
       }
     );
+  },
+  computed: {
+    list() {
+      if (this.searchValue.trim().length > 0) {
+        return this.regs.filter((reg) =>
+          reg.phone.includes(this.searchValue.trim())
+        );
+      }
+      return this.regs;
+    },
   },
 };
 </script>

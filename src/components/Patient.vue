@@ -4,10 +4,20 @@
       <h4>Quản lý bệnh nhân</h4>
       <br />
       <router-link to="/patients/add" class="row">
-        <button class="btn btn-success" v-on:click="addPatient()">Thêm</button>
+        <button class="btn btn-success add" v-on:click="addPatient()">
+          Thêm
+        </button>
       </router-link>
-      <div v-if="message" class="alert alert-success">{{ this.message }}</div>
-      <div class="container">
+      <br />
+      <input
+        type="text"
+        placeholder="Số điện thoại"
+        class="search-input"
+        v-model="searchValue"
+      />
+      <br />
+      <br />
+      <div class="container" v-if="list.length">
         <table class="table">
           <thead>
             <tr>
@@ -24,7 +34,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="patient in patients" v-bind:key="patient.patientID">
+            <tr v-for="patient in list" v-bind:key="patient.patientID">
               <td>{{ patient.patientID }}</td>
               <td>{{ patient.fullName }}</td>
               <td>{{ patient.gender }}</td>
@@ -45,6 +55,7 @@
           </tbody>
         </table>
       </div>
+      <div v-else>Không có kết quả cho: {{ searchValue }}</div>
     </header>
   </div>
 </template>
@@ -55,6 +66,7 @@ export default {
   name: "patientView",
   data() {
     return {
+      searchValue: "",
       patients: [],
     };
   },
@@ -73,5 +85,20 @@ export default {
       }
     );
   },
+  computed: {
+    list() {
+      if (this.searchValue.trim().length > 0) {
+        return this.patients.filter((patient) =>
+          patient.phone.includes(this.searchValue.trim())
+        );
+      }
+      return this.patients;
+    },
+  },
 };
 </script>
+<style>
+.add {
+  width: 70px;
+}
+</style>

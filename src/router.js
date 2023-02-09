@@ -26,7 +26,6 @@ const Bill = () => import("./components/Bill.vue")
 const Sum = () => import("./components/Sum.vue")
 const AddBill = () => import("./components/AddBill.vue")
 const UpdateBill = () => import("./components/UpdateBill.vue")
-const AddSum = () => import("./components/AddSum.vue")
 const ListSumByPatient = () => import("./components/ListSumByPatient.vue")
 const UpdateSum = () => import("./components/UpdateSum.vue")
 
@@ -162,11 +161,6 @@ const routes = [
     path: "/sums",
     name: "sumsView",
     component: Sum,
-  },
-  {
-    path: "/sums/add",
-    name: "sumAdd",
-    component: AddSum,
   },
   {
     path: "/sums/update/:id",

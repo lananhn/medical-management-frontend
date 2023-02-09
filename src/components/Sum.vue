@@ -1,11 +1,17 @@
 <template>
   <div class="container">
     <header class="jumbotron">
-      <br />
       <h4>Danh sách bệnh nhân</h4>
       <br />
-      <div v-if="message" class="alert alert-success">{{ this.message }}</div>
-      <div class="container">
+      <input
+        type="text"
+        placeholder="Số điện thoại bệnh nhân"
+        class="search-input"
+        v-model="searchValue"
+      />
+      <br />
+      <br />
+      <div class="container" v-if="list.length">
         <table class="table">
           <thead>
             <tr>
@@ -21,7 +27,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="patient in patients" v-bind:key="patient.patientID">
+            <tr v-for="patient in list" v-bind:key="patient.patientID">
               <td>{{ patient.patientID }}</td>
               <td>{{ patient.fullName }}</td>
               <td>{{ patient.gender }}</td>
@@ -39,6 +45,7 @@
           </tbody>
         </table>
       </div>
+      <div v-else>Không có kết quả cho: {{ searchValue }}</div>
     </header>
   </div>
 </template>
@@ -49,6 +56,7 @@ export default {
   name: "patientView",
   data() {
     return {
+      searchValue: "",
       patients: [],
     };
   },
@@ -66,6 +74,16 @@ export default {
           error.toString();
       }
     );
+  },
+  computed: {
+    list() {
+      if (this.searchValue.trim().length > 0) {
+        return this.patients.filter((patient) =>
+          patient.phone.includes(this.searchValue.trim())
+        );
+      }
+      return this.patients;
+    },
   },
 };
 </script>

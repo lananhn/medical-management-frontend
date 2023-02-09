@@ -1,19 +1,29 @@
 <template>
   <div class="container">
-    <header class="jumbotron">
+    <Form @submit="handleAdd" :validation-schema="schema">
       <div v-if="!submitted">
         <h4>Thêm loại dịch vụ</h4>
         <div class="mb-3">
-          <label class="form-label">Tên loại dịch vụ</label>
-          <input
+          <label class="form-label">Tên loại dịch vụ*</label>
+          <Field
+            name="name"
             type="text"
             class="form-control"
             v-model="typeOfService.name"
           />
+          <ErrorMessage name="name" class="error-feedback" />
         </div>
         <div class="mb-3">
-          <button @click="saveTypeOfService" class="btn btn-success">
-            Lưu
+          <button
+            @click="saveTypeOfService"
+            class="btn btn-success"
+            :disabled="loading"
+          >
+            <span
+              v-show="loading"
+              class="spinner-border spinner-border-sm"
+            ></span>
+            <span>Lưu</span>
           </button>
         </div>
       </div>
@@ -25,21 +35,33 @@
           <button class="btn btn-success">Quay lại</button>
         </router-link>
       </div>
-    </header>
+    </Form>
   </div>
 </template>
 
 <script>
 import TypeOfService from "../services/type-of-service";
+import { Form, Field, ErrorMessage } from "vee-validate";
+import * as yup from "yup";
 
 export default {
+  components: {
+    Form,
+    Field,
+    ErrorMessage,
+  },
   data() {
+    const schema = yup.object().shape({
+      name: yup.string().required("Tên cần được nhập"),
+    });
     return {
       typeOfService: {
         name: "",
         message: null,
       },
+      loading: false,
       submitted: false,
+      schema,
     };
   },
   methods: {
@@ -52,8 +74,13 @@ export default {
           this.typeOfService.id = response.data.id;
           this.submitted = true;
         })
+        // .catch(() => {
+        //   this.$toast.error("Tên loại dịch vụ đã tồn tại");
+        // });
         .catch((e) => {
-          alert(e);
+          if (e.response.status === 404) {
+            this.$toast.error("Tên loại dịch vụ đã tồn tại");
+          }
         });
     },
   },
