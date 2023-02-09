@@ -1,20 +1,27 @@
 <template>
   <div class="container">
-    <!-- <header class="jumbotron"> -->
     <h4>Quản lý Loại dịch vụ</h4>
     <br />
     <router-link to="/type-of-services/add" class="row">
-      <button class="btn btn-success add" v-on:click="addTypeOfService()">
-        Thêm
-      </button>
+      <button type="button" class="btn btn-success add">Thêm</button>
     </router-link>
     <br />
-    <input
+    <!-- <input
       type="text"
       placeholder="Tên loại dịch vụ"
       class="search-input"
       v-model="searchValue"
-    />
+    /> -->
+    <form class="d-flex" role="search">
+      <input
+        class="form-control me-2"
+        type="search"
+        placeholder="Search"
+        aria-label="Search"
+        v-model="searchValue"
+      />
+      <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
     <br />
     <br />
     <div class="container" v-if="list.length">
@@ -44,7 +51,6 @@
       </table>
     </div>
     <div v-else>Không có kết quả cho: {{ searchValue }}</div>
-    <!-- </header> -->
   </div>
 </template>
 
@@ -91,4 +97,5 @@ export default {
 .add {
   width: 70px;
 }
+@import url(https://unpkg.com/bootstrap@4.1.0/dist/css/bootstrap.min.css);
 </style>

@@ -1,93 +1,94 @@
 <template>
   <div id="app">
-    <nav class="navbar navbar-expand navbar-dark bg-dark">
-      <a href="/" class="navbar-brand"
-        >Quản lý khám chữa bệnh
-        <font-awesome-icon icon="volume-up" />
-      </a>
-      <div class="navbar-nav mr-auto">
-        <li class="nav-item"></li>
-        <li v-if="showAdminBoard" class="nav-item">
-          <router-link to="/typeOfServices" class="nav-link">
-            <font-awesome-icon icon="fa-solid fa-book-medical" />
-            Loại dịch vụ
-          </router-link>
-        </li>
-        <li v-if="showAdminBoard" class="nav-item">
-          <router-link to="/services" class="nav-link">
-            <font-awesome-icon icon="user" />
-            Dịch vụ
-          </router-link>
-        </li>
-        <li v-if="showAdminBoard" class="nav-item">
-          <router-link to="/user" class="nav-link">
-            <font-awesome-icon icon="user" />
-            Nhân viên
-          </router-link>
-        </li>
+    <div class="containter-fluid">
+      <div
+        class="row text-white"
+        style="background-color: #0c713d; padding: 1rem"
+      >
+        <div
+          class="col-1 d-flex d-sm-none align-items-center justify-content-center"
+        >
+          <span @click="showDrawer()">
+            <font-awesome-icon icon="align-justify" />
+          </span>
+        </div>
 
-        <li v-if="showNurseBoard" class="nav-item">
-          <router-link to="/patients" class="nav-link">
-            <font-awesome-icon icon="user" />
-            Bệnh nhân
-          </router-link>
-        </li>
-        <li v-if="showNurseBoard" class="nav-item">
-          <router-link to="/listTypeOfServicesForNurse" class="nav-link">
-            <font-awesome-icon icon="user" />
-            Danh sách loại dịch vụ
-          </router-link>
-        </li>
-        <li v-if="showNurseBoard" class="nav-item">
-          <router-link to="/listServicesForNurse" class="nav-link">
-            <font-awesome-icon icon="user" />
-            Danh sách dịch vụ
-          </router-link>
-        </li>
+        <div
+          class="col-10 col-sm-9 d-flex align-items-center justify-content-center justify-content-sm-start"
+        >
+          <span class="d-none d-sm-flex">QUẢN LÝ KHÁM CHỮA BỆNH</span>
+        </div>
 
-        <li v-if="showDoctorBoard" class="nav-item">
-          <font-awesome-icon icon="user" />
-          <router-link to="/servicesReg" class="nav-link">
-            Đăng ký
-          </router-link>
-        </li>
-        <li v-if="showDoctorBoard" class="nav-item">
-          <router-link to="/results" class="nav-link">
+        <div
+          class="col-1 d-flex d-sm-none align-items-center justify-content-center"
+        >
+          <span @click="showDrawerUser()">
             <font-awesome-icon icon="user" />
-            Kết quả
-          </router-link>
-        </li>
-        <li v-if="showAccountantBoard" class="nav-item">
-          <router-link to="/bills" class="nav-link">
-            <font-awesome-icon icon="user" />
-            Bản kê
-          </router-link>
-        </li>
-        <li v-if="showAccountantBoard" class="nav-item">
-          <router-link to="/sums" class="nav-link">
-            <font-awesome-icon icon="user" />
-            Tổng viện phí
-          </router-link>
-        </li>
+          </span>
+        </div>
       </div>
+    </div>
 
-      <div v-if="currentUser" class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <router-link to="/profile" class="nav-link">
-            <font-awesome-icon icon="user" />
-            {{ currentUser.username }}
-          </router-link>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" @click.prevent="logOut">
-            <font-awesome-icon icon="sign-out-alt" /> Đăng xuất
-          </a>
-        </li>
+    <div class="container-fluid mt-3">
+      <div class="row">
+        <div class="col-sm-3 d-none d-sm-flex">
+          <a-menu
+            v-model:openKeys="openKeys"
+            v-model:selectedKeys="selectedKeys"
+            mode="inline"
+          >
+            <a-list bordered style="width: 100%">
+              <a-menu-item v-if="showAdminBoard">
+                <router-link to="/typeOfServices"> Loại dịch vụ </router-link>
+              </a-menu-item>
+              <a-menu-item v-if="showAdminBoard">
+                <router-link to="/services"> Dịch vụ </router-link>
+              </a-menu-item>
+              <a-menu-item v-if="showAdminBoard">
+                <router-link to="/user">Nhân viên </router-link>
+              </a-menu-item>
+              <a-menu-item v-if="showNurseBoard">
+                <router-link to="/user"> Bệnh nhân </router-link>
+              </a-menu-item>
+              <a-menu-item v-if="showNurseBoard">
+                <router-link to="/listTypeOfServicesForNurse"
+                  >Danh sách loại dịch vụ
+                </router-link>
+              </a-menu-item>
+              <a-menu-item v-if="showNurseBoard">
+                <router-link to="/listServicesForNurse"
+                  >Danh sách dịch vụ
+                </router-link>
+              </a-menu-item>
+              <a-menu-item v-if="showDoctorBoard">
+                <router-link to="/servicesReg">Đăng ký dịch vụ </router-link>
+              </a-menu-item>
+              <a-menu-item v-if="showDoctorBoard">
+                <router-link to="/results">Kết quả </router-link>
+              </a-menu-item>
+              <a-menu-item v-if="showAccountantBoard">
+                <router-link to="/bills">Bản kê </router-link>
+              </a-menu-item>
+              <a-menu-item v-if="showAccountantBoard">
+                <router-link to="/sums">Thanh toán viện phí </router-link>
+              </a-menu-item>
+              <a-menu-item v-if="currentUser">
+                <router-link to="/profile">
+                  {{ currentUser.username }}
+                </router-link>
+              </a-menu-item>
+              <a-menu-item @click.prevent="logOut"> Đăng xuất </a-menu-item>
+              <template #header>
+                <div>BẢNG ĐIỀU KHIỂN</div>
+              </template>
+            </a-list>
+          </a-menu>
+        </div>
+
+        <div class="col-12 col-sm-9 container">
+          <router-view></router-view>
+        </div>
       </div>
-    </nav>
-
-    <div class="container">
-      <router-view />
     </div>
   </div>
 </template>
@@ -132,5 +133,5 @@ export default {
 };
 </script>
 <style>
-@import url(https://unpkg.com/bootstrap@4.1.0/dist/css/bootstrap.min.css);
+/* @import url(https://unpkg.com/bootstrap@4.1.0/dist/css/bootstrap.min.css); */
 </style>

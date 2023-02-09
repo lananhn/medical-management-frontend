@@ -21,7 +21,6 @@
             <th>Id</th>
             <th>Username</th>
             <th>Họ và tên</th>
-            <th>Password</th>
             <th>Địa chỉ</th>
             <th>Email</th>
             <th>Số điện thoại</th>
@@ -35,7 +34,6 @@
             <td>{{ user.userId }}</td>
             <td>{{ user.username }}</td>
             <td>{{ user.name }}</td>
-            <td>{{ user.password }}</td>
             <td>{{ user.address }}</td>
             <td>{{ user.email }}</td>
             <td>{{ user.phone }}</td>
